@@ -1,0 +1,18 @@
+digital tube
+---------
+down line:
+2port-6port
+analog IO A1-A5
+---------
+up line:
+1port-6port
+digital IO 2-7
+
+Remote
+digital IO 11
+---------
+relay
+digital IO 8
+
+
+
