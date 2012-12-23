@@ -32,6 +32,7 @@ DigitalTube::DigitalTube(){
   pinMode(displayPins[2], OUTPUT);
   times[0]=times[1]=times[2]=0;
   index=0;
+  start=false;
   changed=true;
 }
 void DigitalTube::setSegments(int n){
@@ -40,11 +41,22 @@ void DigitalTube::setSegments(int n){
   } 
 
 }
-void DigitalTube::update(){
+void DigitalTube::updateTimes(int minutes){
 
-//  timer.update();
-  updateDisplay();
+  times[2]=minutes/60;
+  times[1]=(minutes%60)/10;
+  times[0]=(minutes%60)%10;
 
+}
+void DigitalTube::countDown(){
+  if(!start) return;
+  if(totalMinutes==0){
+    digitalWrite(8,LOW);
+    start=false;
+    return;
+  }
+  totalMinutes--;  
+  updateTimes(totalMinutes);
 }
 void DigitalTube::updateDisplay(){
   
@@ -75,6 +87,15 @@ int DigitalTube::getTime(int which){
     return times[which];
   }
 }
+void DigitalTube::startTimer(){
+  
+  start=true;
+  totalMinutes=times[0]+times[1]*10+times[2]*60;
+  digitalWrite(displayPins[0], LOW);
+  digitalWrite(displayPins[1], LOW);
+  digitalWrite(displayPins[2], LOW);
+  delay(500);
+}
 void DigitalTube::invoke(long command){
   
     if(isDigital(command)){
@@ -83,9 +104,15 @@ void DigitalTube::invoke(long command){
     }
     if(command==KEY_BACK){
       leftMove();
+      return;
     }
     if(command==KEY_FORWARD){
       rightMove();
+      return;
     }
-
+    if(command==KEY_PLAY){
+      startTimer();
+      return;
+    }
 }
+

@@ -10,20 +10,23 @@ class DigitalTube{
   ~DigitalTube(){}
 
   void setSegments(int n);
-  void update();
   void updateDisplay();
   void invoke(long command);
   void leftMove(){index++; if(index>2)index=0; changed=true;}
   void rightMove(){index--; if(index<0)index=2; changed=true;}
   void setTime(int time);
   int getTime(int witch);
+  void countDown();
+  void startTimer();
+  void updateTimes(int minutes);
   
   private:
   int times[3];
   int index;
   boolean changed;
-//  Timer timer;
+  Timer timer;
   boolean start;
+  int totalMinutes;
 };
   static const byte digits[10][8] = {
 //  a  b  c  d  e  f  g  .

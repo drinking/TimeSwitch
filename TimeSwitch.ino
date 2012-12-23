@@ -17,14 +17,18 @@ int i=0;
 IRrecv irrecv(RECV_PIN);
 long command=0;
 decode_results results;
-Timer t;
-
+Timer timer;
+void countdown(){
+  mDisplay->countDown();
+}
 void setup()
 {
   Serial.begin(9600);
   irrecv.enableIRIn(); // Start the receiver
   pinMode(LED_ONE,OUTPUT);
   mDisplay=new DigitalTube();
+  digitalWrite(LED_ONE,HIGH);
+  timer.every(60000,countdown); 
 }
 
 void loop() {
@@ -42,15 +46,7 @@ void loop() {
     }
     irrecv.resume(); // Receive the next value
   }
+  timer.update();
   mDisplay->updateDisplay();
 }
-// Project 14 - Double Dice
-//void loop()
-//{
-//  static int dice1;
-//  static int dice2;
-//  dice1 = random(1,7);
-//  dice2 = random(1,7);
-//  mDisplay->updateDisplay(2,5);
-//}
 
